@@ -12,4 +12,5 @@ ADD ./root/insecure_key.pub /root/.ssh/id_rsa.pub
 RUN chmod 0600 /root/.ssh/id_rsa*
 COPY etc/ansible /etc/ansible
 RUN chmod -x /etc/ansible/*
-ENTRYPOINT tail -f /var/log/dmesg
+CMD ["play.yml"]
+ENTRYPOINT ["ansible-playbook"]
