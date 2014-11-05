@@ -1,15 +1,13 @@
-FROM ubuntu
+FROM ubuntu:trusty
 MAINTAINER Yves Serrano <y@yas.ch>
 
-RUN apt-get update && apt-get install -y software-properties-common
-RUN apt-add-repository ppa:ansible/ansible
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y software-properties-common && \
+    apt-add-repository ppa:ansible/ansible && \
+    apt-get update && apt-get install -y \
         ansible \
-    && rm -rf /var/lib/apt/lists/*
-
-ADD ./root/insecure_key /root/.ssh/id_rsa
-ADD ./root/insecure_key.pub /root/.ssh/id_rsa.pub
-RUN chmod 0600 /root/.ssh/id_rsa*
+    && rm -rf /var/lib/apt/lists/* && \
+    mkdir /root/.ssh && chmod 0600 /root/.ssh
+COPY ./root/_ssh_insecure/id_rsa ./root/_ssh_insecure/id_rsa.pub /root/.ssh/
 COPY etc/ansible /etc/ansible
 RUN chmod -x /etc/ansible/*
 CMD ["play.yml"]
